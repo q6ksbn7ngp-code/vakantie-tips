@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vakantie Tips</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --sand:#F5EFE0; --sand-dark:#DDD4BF;
+      --ocean:#1A4D6B; --ocean-mid:#2E7DAA; --ocean-light:#B8D9ED;
+      --terra:#C4694A; --terra-light:#F0D5CB;
+      --white:#FDFAF5; --text:#1C1C1C; --text-mid:#555; --text-light:#8A8A7A;
+      --r:16px; --r-sm:10px;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'DM Sans',sans-serif;background:var(--sand);color:var(--text);min-height:100vh;}
+    body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+      background:radial-gradient(ellipse 80% 50% at 15% -5%,rgba(26,77,107,.09) 0%,transparent 55%),
+                 radial-gradient(ellipse 55% 35% at 85% 105%,rgba(196,105,74,.07) 0%,transparent 55%);}
+    .page{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:2.5rem 1.5rem 5rem;}
+
+    /* LOGO + HERO */
+    .logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:1.5rem;animation:fadeUp .6s ease both;}
+    .logo-icon{width:52px;height:52px;background:var(--ocean);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;}
+    .logo-text{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;color:var(--ocean);}
+    .logo-text span{color:var(--terra);}
+
+    .hero{text-align:center;margin-bottom:2.5rem;animation:fadeUp .7s ease both;}
+    .eyebrow{font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--terra);margin-bottom:.7rem;}
+    .hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,5.5vw,3.8rem);font-weight:300;line-height:1.1;color:var(--ocean);margin-bottom:.7rem;}
+    .hero h1 em{font-style:italic;color:var(--terra);}
+    .hero p{font-size:13.5px;color:var(--text-mid);font-weight:300;}
+    .divider{width:48px;height:2px;background:linear-gradient(90deg,var(--terra),var(--ocean-mid));margin:.9rem auto;border-radius:2px;}
+
+    /* SEARCH */
+    .search-wrap{margin-bottom:2rem;animation:fadeUp .7s .08s ease both;}
+    .search-box{display:flex;background:var(--white);border:1.5px solid var(--ocean-light);border-radius:50px;overflow:hidden;box-shadow:0 4px 22px rgba(26,77,107,.1);transition:box-shadow .2s,border-color .2s;}
+    .search-box:focus-within{box-shadow:0 6px 30px rgba(26,77,107,.18);border-color:var(--ocean-mid);}
+    .search-box input{flex:1;border:none;outline:none;padding:15px 22px;font-family:'DM Sans',sans-serif;font-size:15px;background:transparent;color:var(--text);}
+    .search-box input::placeholder{color:var(--text-light);}
+    .search-box button{margin:6px;padding:10px 26px;background:var(--ocean);color:var(--white);border:none;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:.04em;cursor:pointer;transition:background .2s,transform .1s;white-space:nowrap;}
+    .search-box button:hover{background:var(--ocean-mid);}
+    .search-box button:active{transform:scale(.97);}
+    .pills{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:12px;}
+    .pill{padding:5px 14px;border:1px solid var(--sand-dark);border-radius:50px;font-size:12px;color:var(--text-mid);cursor:pointer;background:transparent;font-family:'DM Sans',sans-serif;transition:all .2s;}
+    .pill:hover{background:var(--white);border-color:var(--ocean-light);color:var(--ocean);}
+
+    /* CONTENT */
+    #content{display:none;animation:fadeUp .5s ease both;}
+    .dest-header{display:flex;align-items:baseline;gap:12px;margin-bottom:1.75rem;flex-wrap:wrap;}
+    .dest-header h2{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:400;color:var(--ocean);}
+    .country-tag{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--terra);padding:3px 11px;background:var(--terra-light);border-radius:50px;}
+
+    /* TABS */
+    .tabs{display:flex;gap:4px;margin-bottom:1.5rem;background:var(--white);padding:5px;border-radius:50px;border:1px solid var(--sand-dark);width:fit-content;}
+    .tab{padding:8px 20px;border-radius:50px;font-size:13px;cursor:pointer;color:var(--text-mid);border:none;background:transparent;font-family:'DM Sans',sans-serif;transition:all .2s;}
+    .tab.active{background:var(--ocean);color:var(--white);font-weight:500;}
+    .tab:not(.active):hover{color:var(--ocean);}
+    .panel{display:none;}
+    .panel.active{display:block;}
+
+    /* WEER */
+    .weather-hero{background:var(--ocean);color:var(--white);border-radius:var(--r);padding:2rem;margin-bottom:.75rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;}
+    .wh-left h3{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:300;opacity:.65;margin-bottom:.4rem;}
+    .wh-temp{font-family:'Cormorant Garamond',serif;font-size:5rem;font-weight:300;line-height:1;}
+    .wh-temp sup{font-size:2rem;vertical-align:super;}
+    .wh-desc{font-size:13.5px;opacity:.75;margin-top:5px;}
+    .wh-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}
+    .wh-chip{font-size:12px;opacity:.7;background:rgba(255,255,255,.12);padding:3px 10px;border-radius:50px;}
+    .wh-icon{font-size:5rem;line-height:1;}
+    .forecast{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;}
+    @media(max-width:580px){.forecast{grid-template-columns:repeat(4,1fr);}}
+    .fc{background:var(--white);border:1px solid var(--sand-dark);border-radius:var(--r-sm);padding:10px 5px;text-align:center;transition:border-color .2s,transform .2s;}
+    .fc:hover{border-color:var(--ocean-light);transform:translateY(-2px);}
+    .fc-day{font-size:10.5px;color:var(--text-light);font-weight:500;letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px;}
+    .fc-ico{font-size:1.35rem;margin-bottom:3px;}
+    .fc-hi{font-size:13.5px;font-weight:500;}
+    .fc-lo{font-size:11.5px;color:var(--text-light);}
+    .fc-rain{font-size:11px;color:var(--ocean-mid);margin-top:2px;}
+    .weather-note{font-size:11.5px;color:var(--text-light);margin-top:8px;text-align:right;}
+
+    /* TIPS */
+    .tips-wrap{display:flex;flex-direction:column;gap:10px;}
+    .tip-card{background:var(--white);border:1px solid var(--sand-dark);border-radius:var(--r);padding:1.25rem 1.5rem;display:flex;gap:1rem;align-items:flex-start;transition:border-color .2s,transform .2s;animation:fadeUp .4s ease both;}
+    .tip-card:hover{border-color:var(--ocean-light);transform:translateY(-2px);}
+    .tip-ico{font-size:1.6rem;flex-shrink:0;margin-top:2px;}
+    .tip-cat{font-size:10.5px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--terra);margin-bottom:4px;}
+    .tip-title{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:400;color:var(--ocean);margin-bottom:5px;}
+    .tip-text{font-size:13.5px;color:var(--text-mid);line-height:1.65;}
+    .tips-refresh{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px;padding:12px;background:transparent;border:1px dashed var(--sand-dark);border-radius:var(--r-sm);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text-light);transition:all .2s;width:100%;}
+    .tips-refresh:hover{border-color:var(--ocean-light);color:var(--ocean-mid);background:var(--white);}
+
+    /* CHAT */
+    .chat-outer{margin-top:1rem;border:1.5px solid var(--ocean-light);border-radius:var(--r);overflow:hidden;background:var(--white);}
+    .chat-kop{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--terra);padding:.75rem 1.25rem;border-bottom:1px solid var(--sand-dark);background:var(--sand);}
+    .chat-berichten{min-height:200px;max-height:380px;overflow-y:auto;padding:1.25rem;display:flex;flex-direction:column;gap:10px;}
+    .bericht{max-width:82%;padding:10px 14px;border-radius:12px;font-size:13.5px;line-height:1.6;}
+    .bericht.ai{align-self:flex-start;background:var(--sand);color:var(--text);border-bottom-left-radius:4px;}
+    .bericht.user{align-self:flex-end;background:var(--ocean);color:var(--white);border-bottom-right-radius:4px;}
+    .chat-sugs{display:flex;flex-wrap:wrap;gap:6px;padding:.75rem 1.25rem;border-top:1px solid var(--sand-dark);}
+    .chat-sug{padding:5px 13px;background:var(--sand);border:1px solid var(--sand-dark);border-radius:50px;font-size:12px;color:var(--text-mid);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+    .chat-sug:hover{background:var(--white);border-color:var(--ocean-light);color:var(--ocean);}
+    .chat-invoer{display:flex;border-top:1px solid var(--sand-dark);}
+    .chat-invoer input{flex:1;border:none;outline:none;padding:13px 16px;font-family:'DM Sans',sans-serif;font-size:14px;background:transparent;color:var(--text);}
+    .chat-invoer input::placeholder{color:var(--text-light);}
+    .chat-invoer button{padding:12px 20px;background:var(--ocean);color:var(--white);border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;transition:background .2s;}
+    .chat-invoer button:hover{background:var(--ocean-mid);}
+
+    /* NAVIGATIE */
+    .kaart-wrap{background:var(--white);border:1px solid var(--sand-dark);border-radius:var(--r);overflow:hidden;margin-bottom:.75rem;}
+    .kaart-wrap iframe{width:100%;height:300px;display:block;border:none;}
+    .poi-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+    @media(max-width:480px){.poi-grid{grid-template-columns:1fr;}}
+    .poi{display:flex;align-items:center;gap:11px;padding:12px 14px;background:var(--white);border:1px solid var(--sand-dark);border-radius:var(--r-sm);cursor:pointer;text-decoration:none;color:var(--text);transition:all .2s;}
+    .poi:hover{border-color:var(--ocean-light);transform:translateY(-1px);box-shadow:0 3px 12px rgba(26,77,107,.08);}
+    .poi-ico{font-size:1.2rem;width:28px;text-align:center;flex-shrink:0;}
+    .poi-naam{font-size:13px;font-weight:500;}
+    .poi-sub{font-size:11.5px;color:var(--text-light);margin-top:1px;}
+    .poi-pijl{margin-left:auto;color:var(--text-light);font-size:11px;}
+
+    /* STATES */
+    .laden{text-align:center;padding:3rem;color:var(--text-light);font-size:13px;}
+    .spinner{width:22px;height:22px;border:2px solid var(--sand-dark);border-top-color:var(--ocean-mid);border-radius:50%;animation:spin .75s linear infinite;margin:0 auto 12px;}
+    .fout{background:#FEF0ED;border:1px solid #F0C5B8;border-radius:var(--r-sm);padding:12px 16px;font-size:13px;color:var(--terra);}
+
+    .footer{text-align:center;margin-top:4rem;font-size:11px;color:var(--text-light);letter-spacing:.04em;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes spin{to{transform:rotate(360deg)}}
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="logo">
+    <div class="logo-icon">🌴</div>
+    <div class="logo-text">Vakantie <span>Tips</span></div>
+  </div>
+
+  <header class="hero">
+    <div class="eyebrow">jouw persoonlijke reisgids</div>
+    <h1>Waar ga jij<br><em>naartoe?</em></h1>
+    <div class="divider"></div>
+    <p>Actueel weer · AI-tips op basis van het weer · Navigatie</p>
+  </header>
+
+  <div class="search-wrap">
+    <div class="search-box">
+      <input type="text" id="destInput" placeholder="Stad of regio, bijv. Llafranc of Athene…" autocomplete="off" />
+      <button id="zoekBtn">Ontdekken →</button>
+    </div>
+    <div class="pills">
+      <span class="pill" onclick="setDest('Llafranc, Spanje')">Llafranc</span>
+      <span class="pill" onclick="setDest('Barcelona, Spanje')">Barcelona</span>
+      <span class="pill" onclick="setDest('Rome, Italië')">Rome</span>
+      <span class="pill" onclick="setDest('Athene, Griekenland')">Athene</span>
+      <span class="pill" onclick="setDest('Lissabon, Portugal')">Lissabon</span>
+      <span class="pill" onclick="setDest('Dubrovnik, Kroatië')">Dubrovnik</span>
+    </div>
+  </div>
+
+  <div id="content">
+    <div class="dest-header">
+      <h2 id="destTitle">—</h2>
+      <span class="country-tag" id="destLand"></span>
+    </div>
+    <div class="tabs">
+      <button class="tab active" data-tab="weer">🌤 Weer</button>
+      <button class="tab" data-tab="tips">✦ AI Tips</button>
+      <button class="tab" data-tab="kaart">🗺 Navigatie</button>
+    </div>
+
+    <!-- WEER -->
+    <div class="panel active" id="panel-weer">
+      <div id="weer-laden" class="laden"><div class="spinner"></div>Weerdata ophalen…</div>
+      <div id="weer-inhoud" style="display:none">
+        <div class="weather-hero">
+          <div class="wh-left">
+            <h3 id="wh-loc">—</h3>
+            <div class="wh-temp" id="wh-temp">—<sup>°</sup></div>
+            <div class="wh-desc" id="wh-desc">—</div>
+            <div class="wh-chips">
+              <span class="wh-chip" id="wh-wind">—</span>
+              <span class="wh-chip" id="wh-vocht">—</span>
+              <span class="wh-chip" id="wh-regen">—</span>
+            </div>
+          </div>
+          <div class="wh-icon" id="wh-icon">—</div>
+        </div>
+        <div class="forecast" id="voorspelling"></div>
+        <p class="weather-note">Bron: Open-Meteo · Actuele data</p>
+      </div>
+      <div id="weer-fout" class="fout" style="display:none"></div>
+    </div>
+
+    <!-- TIPS -->
+    <div class="panel" id="panel-tips">
+      <div id="tips-laden" class="laden" style="display:none"><div class="spinner"></div>AI-tips samenstellen op basis van het weer…</div>
+      <div id="tips-inhoud" class="tips-wrap"></div>
+      <button id="tips-vernieuwen" class="tips-refresh" style="display:none">↺ Nieuwe tips ophalen</button>
+      <div id="tips-fout" class="fout" style="display:none"></div>
+      <div id="chat-wrap" style="display:none">
+        <div class="chat-outer">
+          <div class="chat-kop">Stel een vraag over je reis</div>
+          <div class="chat-berichten" id="chat-berichten"></div>
+          <div class="chat-sugs" id="chat-sugs"></div>
+          <div class="chat-invoer">
+            <input type="text" id="chat-input" placeholder="Bijv. wat zijn goede restaurants?…" />
+            <button id="chat-stuur">Stuur</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KAART -->
+    <div class="panel" id="panel-kaart">
+      <div class="kaart-wrap"><iframe id="kaart-frame" src="" title="Kaart"></iframe></div>
+      <div class="poi-grid" id="poi-grid"></div>
+    </div>
+  </div>
+
+  <footer class="footer">Vakantie Tips · Weer via Open-Meteo · Tips via Claude AI</footer>
+</div>
+
+<script>
+var staat = { dest:'', lat:0, lon:0, weer:null };
+var chatGeschiedenis = [];
+var tipsGeladen = false;
+
+var wmo = {
+  0:['☀️','Helder'],1:['🌤','Overwegend helder'],2:['⛅','Deels bewolkt'],3:['☁️','Bewolkt'],
+  45:['🌫','Mist'],48:['🌫','IJsmist'],
+  51:['🌦','Lichte motregen'],53:['🌦','Motregen'],55:['🌧','Zware motregen'],
+  61:['🌧','Lichte regen'],63:['🌧','Regen'],65:['🌧','Zware regen'],
+  71:['❄️','Lichte sneeuw'],73:['❄️','Sneeuw'],75:['❄️','Zware sneeuw'],
+  80:['🌦','Regenbuien'],81:['🌧','Buien'],82:['⛈','Zware buien'],
+  95:['⛈','Onweer'],96:['⛈','Onweer met hagel'],99:['⛈','Zwaar onweer']
+};
+var dagen = ['Zo','Ma','Di','Wo','Do','Vr','Za'];
+
+function wmoInfo(code) { return wmo[code] || ['🌡','Onbekend']; }
+
+async function geocodeer(query) {
+  var r = await fetch('https://geocoding-api.open-meteo.com/v1/search?name=' + encodeURIComponent(query) + '&count=1&language=nl&format=json');
+  var d = await r.json();
+  if (!d.results || !d.results.length) throw new Error('Locatie niet gevonden');
+  return d.results[0];
+}
+
+async function haalWeer(lat, lon) {
+  var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lon
+    + '&current=temperature_2m,weathercode,windspeed_10m,relativehumidity_2m,precipitation'
+    + '&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum'
+    + '&timezone=auto&forecast_days=7';
+  var r = await fetch(url);
+  return r.json();
+}
+
+function verwerkWeer(raw) {
+  var c = raw.current, d = raw.daily;
+  var info = wmoInfo(c.weathercode);
+  var voorspelling = d.time.map(function(t, i) {
+    var dt = new Date(t);
+    var fi = wmoInfo(d.weathercode[i]);
+    return {
+      dag: dagen[dt.getDay()],
+      icon: fi[0], omschrijving: fi[1],
+      max: Math.round(d.temperature_2m_max[i]),
+      min: Math.round(d.temperature_2m_min[i]),
+      regen: (d.precipitation_sum[i] || 0).toFixed(1)
+    };
+  });
+  return {
+    huidig: {
+      temp: Math.round(c.temperature_2m),
+      icon: info[0], omschrijving: info[1],
+      wind: Math.round(c.windspeed_10m),
+      vocht: Math.round(c.relativehumidity_2m),
+      regen: (c.precipitation || 0).toFixed(1)
+    },
+    voorspelling: voorspelling
+  };
+}
+
+function toonWeer(w, naam) {
+  document.getElementById('wh-loc').textContent = naam;
+  document.getElementById('wh-temp').innerHTML = w.huidig.temp + '<sup>°</sup>';
+  document.getElementById('wh-desc').textContent = w.huidig.omschrijving;
+  document.getElementById('wh-icon').textContent = w.huidig.icon;
+  document.getElementById('wh-wind').textContent = '💨 ' + w.huidig.wind + ' km/u';
+  document.getElementById('wh-vocht').textContent = '💧 ' + w.huidig.vocht + '%';
+  document.getElementById('wh-regen').textContent = '🌧 ' + w.huidig.regen + ' mm';
+  document.getElementById('voorspelling').innerHTML = w.voorspelling.map(function(d) {
+    return '<div class="fc">'
+      + '<div class="fc-day">' + d.dag + '</div>'
+      + '<div class="fc-ico">' + d.icon + '</div>'
+      + '<div class="fc-hi">' + d.max + '°</div>'
+      + '<div class="fc-lo">' + d.min + '°</div>'
+      + (parseFloat(d.regen) > 0 ? '<div class="fc-rain">' + d.regen + 'mm</div>' : '')
+      + '</div>';
+  }).join('');
+}
+
+async function laadTips() {
+  if (!staat.weer) return;
+  tipsGeladen = false;
+  var inhoud = document.getElementById('tips-inhoud');
+  var laden = document.getElementById('tips-laden');
+  var fout = document.getElementById('tips-fout');
+  var knop = document.getElementById('tips-vernieuwen');
+  var chatWrap = document.getElementById('chat-wrap');
+
+  inhoud.innerHTML = '';
+  fout.style.display = 'none';
+  chatWrap.style.display = 'none';
+  knop.style.display = 'none';
+  laden.style.display = 'block';
+
+  var w = staat.weer;
+  var weerTekst = 'Bestemming: ' + staat.dest
+    + '\nHuidige temperatuur: ' + w.huidig.temp + '°C, ' + w.huidig.omschrijving
+    + '\nWind: ' + w.huidig.wind + ' km/u, luchtvochtigheid: ' + w.huidig.vocht + '%'
+    + '\nNeerslag vandaag: ' + w.huidig.regen + ' mm'
+    + '\nKomende 7 dagen: ' + w.voorspelling.map(function(d) {
+        return d.dag + ': ' + d.max + '/' + d.min + '°C ' + d.omschrijving + (parseFloat(d.regen)>0?' ('+d.regen+'mm)':'');
+      }).join(', ');
+
+  try {
+    var res = await fetch('/api/tips', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ bestemming: staat.dest, weerTekst: weerTekst, weer: w })
+    });
+    var data = await res.json();
+    laden.style.display = 'none';
+    if (!data.tips || !data.tips.length) throw new Error('Geen tips ontvangen');
+
+    inhoud.innerHTML = data.tips.map(function(t, i) {
+      return '<div class="tip-card" style="animation-delay:' + (i * 0.07) + 's">'
+        + '<div class="tip-ico">' + (t.icon || '✦') + '</div>'
+        + '<div class="tip-body">'
+        + '<div class="tip-cat">' + t.categorie + '</div>'
+        + '<div class="tip-title">' + t.titel + '</div>'
+        + '<div class="tip-text">' + t.tekst + '</div>'
+        + '</div></div>';
+    }).join('');
+
+    knop.style.display = 'flex';
+    tipsGeladen = true;
+    initChat(w);
+  } catch(e) {
+    laden.style.display = 'none';
+    fout.style.display = 'block';
+    fout.textContent = 'Kon tips niet ophalen. Stel ANTHROPIC_API_KEY in als omgevingsvariabele in Netlify. (' + e.message + ')';
+    knop.style.display = 'flex';
+  }
+}
+
+function initChat(w) {
+  var wrap = document.getElementById('chat-wrap');
+  var berichten = document.getElementById('chat-berichten');
+  var sugs = document.getElementById('chat-sugs');
+
+  chatGeschiedenis = [];
+  berichten.innerHTML = '<div class="bericht ai">Hoi! 👋 Ik ben jouw reisgids voor <strong>' + staat.dest + '</strong>. '
+    + 'Op basis van het weer (' + w.huidig.temp + '°C, ' + w.huidig.omschrijving + ') heb ik de tips hierboven samengesteld. '
+    + 'Stel gerust vragen over restaurants, activiteiten, wat je moet inpakken of andere reistips!</div>';
+
+  var suggesties = [
+    'Wat zijn leuke restaurants?',
+    'Wat pak ik in voor dit weer?',
+    'Wat zijn verborgen parels?',
+    'Wanneer is het het rustigst?'
+  ];
+  sugs.innerHTML = suggesties.map(function(s) {
+    return '<span class="chat-sug" onclick="stuurBericht(\'' + s.replace(/'/g,"\\'") + '\')">' + s + '</span>';
+  }).join('');
+
+  wrap.style.display = 'block';
+}
+
+async function stuurBericht(tekst) {
+  document.getElementById('chat-input').value = tekst;
+  await verstuurChat();
+}
+
+async function verstuurChat() {
+  var input = document.getElementById('chat-input');
+  var berichten = document.getElementById('chat-berichten');
+  var tekst = input.value.trim();
+  if (!tekst) return;
+  input.value = '';
+
+  berichten.innerHTML += '<div class="bericht user">' + tekst + '</div>';
+  berichten.scrollTop = berichten.scrollHeight;
+  chatGeschiedenis.push({ role: 'user', content: tekst });
+
+  var laden = document.createElement('div');
+  laden.className = 'bericht ai';
+  laden.innerHTML = '<span style="opacity:.4">…</span>';
+  berichten.appendChild(laden);
+  berichten.scrollTop = berichten.scrollHeight;
+
+  var w = staat.weer;
+  var weerTekst = staat.dest + ': ' + w.huidig.temp + '°C, ' + w.huidig.omschrijving + ', wind ' + w.huidig.wind + ' km/u';
+
+  try {
+    var res = await fetch('/api/tips', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        bestemming: staat.dest,
+        weerTekst: weerTekst,
+        weer: w,
+        chatModus: true,
+        geschiedenis: chatGeschiedenis
+      })
+    });
+    var data = await res.json();
+    var antwoord = data.antwoord || 'Er ging iets mis.';
+    chatGeschiedenis.push({ role: 'assistant', content: antwoord });
+    laden.textContent = antwoord;
+  } catch(e) {
+    laden.textContent = 'Er ging iets mis. Probeer het opnieuw.';
+  }
+  berichten.scrollTop = berichten.scrollHeight;
+}
+
+function toonKaart(dest, lat, lon) {
+  document.getElementById('kaart-frame').src =
+    'https://www.openstreetmap.org/export/embed.html?bbox=' + (lon-.05) + ',' + (lat-.05) + ',' + (lon+.05) + ',' + (lat+.05) + '&layer=mapnik&marker=' + lat + ',' + lon;
+
+  var pois = [
+    { ico:'🏖', naam:'Strand & kust', sub:'Dichtstbijzijnde strand' },
+    { ico:'🍽', naam:'Restaurants', sub:'Lokale eetgelegenheden' },
+    { ico:'🏛', naam:'Bezienswaardigheden', sub:'Cultuur & geschiedenis' },
+    { ico:'🛍', naam:'Markt & winkels', sub:'Lokale markt' },
+    { ico:'🌿', naam:'Wandelroutes', sub:'Natuur & uitzichtpunten' },
+    { ico:'🚗', naam:'Parkeren', sub:'Parkeerplaatsen' }
+  ];
+  document.getElementById('poi-grid').innerHTML = pois.map(function(p) {
+    return '<a class="poi" href="https://www.google.com/maps/search/' + encodeURIComponent(p.naam + ' ' + dest) + '" target="_blank" rel="noopener">'
+      + '<span class="poi-ico">' + p.ico + '</span>'
+      + '<div><div class="poi-naam">' + p.naam + '</div><div class="poi-sub">' + p.sub + '</div></div>'
+      + '<span class="poi-pijl">↗</span></a>';
+  }).join('');
+}
+
+function setDest(val) {
+  document.getElementById('destInput').value = val;
+  zoeken();
+}
+
+async function zoeken() {
+  var invoer = document.getElementById('destInput').value.trim();
+  if (!invoer) return;
+
+  tipsGeladen = false;
+  chatGeschiedenis = [];
+  document.getElementById('content').style.display = 'none';
+  document.getElementById('tips-inhoud').innerHTML = '';
+  document.getElementById('tips-vernieuwen').style.display = 'none';
+  document.getElementById('chat-wrap').style.display = 'none';
+
+  // reset tabs naar weer
+  document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+  document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelector('[data-tab="weer"]').classList.add('active');
+  document.getElementById('panel-weer').classList.add('active');
+
+  document.getElementById('weer-laden').style.display = 'block';
+  document.getElementById('weer-inhoud').style.display = 'none';
+  document.getElementById('weer-fout').style.display = 'none';
+  document.getElementById('content').style.display = 'block';
+
+  try {
+    var geo = await geocodeer(invoer);
+    staat.lat = geo.latitude;
+    staat.lon = geo.longitude;
+    staat.dest = geo.name + (geo.country ? ', ' + geo.country : '');
+    document.getElementById('destTitle').textContent = geo.name;
+    document.getElementById('destLand').textContent = geo.country || '';
+    document.getElementById('destInput').value = staat.dest;
+
+    var raw = await haalWeer(staat.lat, staat.lon);
+    staat.weer = verwerkWeer(raw);
+    toonWeer(staat.weer, staat.dest);
+
+    document.getElementById('weer-laden').style.display = 'none';
+    document.getElementById('weer-inhoud').style.display = 'block';
+    toonKaart(staat.dest, staat.lat, staat.lon);
+  } catch(e) {
+    document.getElementById('weer-laden').style.display = 'none';
+    document.getElementById('weer-fout').style.display = 'block';
+    document.getElementById('weer-fout').textContent = 'Kon de locatie niet vinden: ' + e.message;
+  }
+}
+
+// Tab-klikken
+document.querySelectorAll('.tab').forEach(function(tab) {
+  tab.addEventListener('click', function() {
+    var id = this.getAttribute('data-tab');
+    document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+    document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+    this.classList.add('active');
+    document.getElementById('panel-' + id).classList.add('active');
+    if (id === 'tips' && !tipsGeladen) laadTips();
+  });
+});
+
+document.getElementById('zoekBtn').addEventListener('click', zoeken);
+document.getElementById('destInput').addEventListener('keydown', function(e){ if(e.key==='Enter') zoeken(); });
+document.getElementById('tips-vernieuwen').addEventListener('click', laadTips);
+document.getElementById('chat-stuur').addEventListener('click', verstuurChat);
+document.getElementById('chat-input').addEventListener('keydown', function(e){ if(e.key==='Enter') verstuurChat(); });
+</script>
+</body>
+</html>

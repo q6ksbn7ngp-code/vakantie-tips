@@ -1,0 +1,21 @@
+{
+  "name": "Vakantie Tips",
+  "short_name": "Vakantie",
+  "description": "Persoonlijke reisgids met weer, AI-tips en navigatie",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1A4D6B",
+  "theme_color": "#1A4D6B",
+  "icons": [
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

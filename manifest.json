@@ -1,6 +1,6 @@
 {
   "name": "Vakantie Tips",
-  "short_name": "Vakantie",
+  "short_name": "Vakantie Tips",
   "description": "Persoonlijke reisgids met weer, AI-tips en navigatie",
   "start_url": "/",
   "display": "standalone",
